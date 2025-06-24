@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>В твой День рождения…</title>
+  <link rel="icon" href="тортик.png" type="image/png" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&family=Great+Vibes&display=swap');
+
+body {
+  margin: 0;
+  background: #f9f5ef;
+  font-family: 'Roboto', sans-serif;
+  color: #4b3b2b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+.falling-stars-container {
+  position: fixed;
+  top: 0;
+  width: 60px;
+  height: 100vh;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 10;
+}
+
+.falling-stars-container.left {
+  left: 0;
+}
+
+.falling-stars-container.right {
+  right: 0;
+}
+
+.falling-star {
+  position: absolute;
+  color: #b5893f;
+  user-select: none;
+  opacity: 0.8;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+
+header {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  color: #7a2f2f;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.congrats-text {
+  max-width: 600px;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: #5c4632;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.audio-section {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.audio-section button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #b5893f;
+  border: none;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(181, 137, 63, 0.4);
+  margin: 0 0.5rem 0.5rem 0.5rem;
+  min-height: 44px;
+}
+
+.audio-section button:hover {
+  background: #92792a;
+}
+
+.audio-section button svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+  flex-shrink: 0;
+}
+
+.progress-container {
+  position: relative;
+  width: 320px;
+  height: 14px;
+  background: #e0d9c3;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 14px;
+  width: 0%;
+  background: linear-gradient(90deg, #b5893f, #92792a);
+  border-radius: 7px;
+  transition: width 0.2s ease;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 20px;
+  height: 20px;
+  background: #b5893f;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(181, 137, 63, 0.7);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: left 0.2s ease;
+}
+
+.time-display {
+  font-size: 1rem;
+  color: #5c4632;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  user-select: none;
+  margin-bottom: 2rem;
+}
+
+.animated-quotes {
+  max-width: 650px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #7a2f2f;
+  border-left: 4px solid #b5893f;
+  padding-left: 1rem;
+  margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.audio-section.playing {
+  box-shadow: 15px 5px 45px rgba(181, 137, 63, 0.4);
+  border-radius: 35px;
+  transition: box-shadow 0.3s ease;
+}
+
+.gallery-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 3rem;
+  color: #7a2f2f;
+}
+
+.slider {
+  position: relative;
+  overflow: hidden;
+  max-width: 90%;
+  margin: 2rem auto;
+  touch-action: pan-y;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+.card {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.card img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.quote p {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #5c4632;
+  font-size: 1.2rem;
+}
+
+.name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.8rem;
+  color: #7a2f2f;
+  white-space: nowrap;
+}
+
+.name::before {
+  content: '\2726\00a0';
+  color: #b5893f;
+}
+
+.name::after {
+  content: '\00a0\2726';
+  color: #b5893f;
+}
+
+.name small {
+  display: block;
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #92792a;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #b5893f;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 2;
+}
+
+.nav.prev { left: 0; }
+.nav.next { right: 0; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .quote p {
+    font-size: 1rem;
+  }
+  .card img {
+    max-width: 90%;
+  }
+}
+
+.animated-quotes.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+  </style>
+</head>
+<body>
+
+  <header>В твой День рождения <img src="тортик.png" alt="" width="40px"></header>
+
+
+  <section class="congrats-text">
+    Пусть каждый твой день будет наполнен вдохновением!<br/>
+    а слова — несут тепло и свет в сердца читателей.<br/>
+    Твое творчество — это подарок миру, и сегодня мы празднуем именно тебя, Татьяна!
+<br><br>
+  <div class="teaser">
+    🤫 Тсс… кто-то хочет с тобой поговорить…<br>
+    <strong> <i>Это радиопередача из будущего!</i></strong>
+  </div>
+</section>
+  <section class="audio-section">
+    <audio id="birthdayAudio" src="вроде норм.mp3"></audio>
+    <button id="playBtn" aria-label="Воспроизвести">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <span>Послушать</span>
+    </button>
+    <button id="restartAudioBtn" aria-label="Перезапустить">
+      <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+      <span>Перезапустить</span>
+    </button>
+  </section>
+
+  <div class="progress-container" tabindex="0" aria-label="Прогресс аудио" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="progress-bar"></div>
+    <div class="progress-thumb" tabindex="0"></div>
+  </div>
+  <div class="time-display">00:00 / 00:00</div>
+
+  <section class="gallery">
+    <h2 class="gallery-title">Поздравления из разных миров</h2>
+    <div class="slider">
+      <button class="nav prev" aria-label="Предыдущее">&#10094;</button>
+      <div class="slider-track">
+        <!-- Карточка 1: Кир -->
+        <div class="card">
+          <img src="kir.png" alt="Кир" />
+          <div class="quote">
+            <p>«Я ещё не знаю, чем закончится моя история, но с тобой мне не страшно ждать.»</p>
+            <span class="name">— Кир<br><small>Герой незавершённой главы</small></span>
+          </div>
+        </div>
+  
+        <!-- Карточка 2: Агата -->
+        <div class="card">
+          <img src="agata.png" alt="Агата" />
+          <div class="quote">
+
+            <span class="name">— Агата<br><small>Сыщица эпохи чайных сервизов</small></span>
+          </div>
+        </div>
+  
+        <!-- Карточка 3: Булгаков -->
+        <div class="card">
+          <img src="bulgakov.png" alt="Булгаков" />
+          <div class="quote">
+            <p>«Рукописи не горят. Особенно те, что написаны с любовью. С днём рождения, Татьяна. Пусть твои истории будут вечны.»</p>
+            <span class="name">— Михаил Булгаков<br><small>Писатель, чародей и наблюдатель</small></span>
+          </div>
+        </div>
+  
+        <!-- Заглушка для Маяковского -->
+        <div class="card placeholder">
+          <div class="quote">
+            <p>Идёт загрузка Маяковского…</p>
+            <span class="name">— Владимир Маяковский<br><small>Скоро появится на сцене</small></span>
+          </div>
+        </div>
+      </div>
+      <button class="nav next" aria-label="Следующее">&#10095;</button>
+    </div>
+  </section>
+  <div class="falling-stars-container left"></div>
+  <div class="falling-stars-container right"></div>
+  
+
+
+  <script>
+    const audio = document.getElementById('birthdayAudio');
+    const playBtn = document.getElementById('playBtn');
+    const restartBtn = document.getElementById('restartAudioBtn');
+    const quotes = document.getElementById('quotesSection');
+    const progressContainer = document.querySelector('.progress-container');
+    const progressBar = document.querySelector('.progress-bar');
+    const progressThumb = document.querySelector('.progress-thumb');
+    const timeDisplay = document.querySelector('.time-display');
+    const track = document.querySelector('.slider-track');
+const cards = document.querySelectorAll('.card');
+const prevBtn = document.querySelector('.nav.prev');
+const nextBtn = document.querySelector('.nav.next');
+let index = 0;
+
+function updateSlider() {
+  const offset = -index * 100;
+  track.style.transform = `translateX(${offset}%)`;
+}
+
+prevBtn.addEventListener('click', () => {
+  index = (index - 1 + cards.length) % cards.length;
+  updateSlider();
+});
+
+nextBtn.addEventListener('click', () => {
+  index = (index + 1) % cards.length;
+  updateSlider();
+});
+    audio.addEventListener('play', () => {
+  document.querySelector('.audio-section').classList.add('playing');
+});
+audio.addEventListener('pause', () => {
+  document.querySelector('.audio-section').classList.remove('playing');
+});
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updatePlayButton() {
+      const playIcon = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+      const pauseIcon = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+      if (audio.paused) {
+        playBtn.innerHTML = playIcon + '<span>Послушать</span>';
+        playBtn.setAttribute('aria-label', 'Воспроизвести');
+      } else {
+        playBtn.innerHTML = pauseIcon + '<span>Пауза</span>';
+        playBtn.setAttribute('aria-label', 'Пауза');
+      }
+    }
+
+    audio.addEventListener('loadedmetadata', () => {
+      timeDisplay.textContent = `00:00 / ${formatTime(audio.duration)}`;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${percent}%`;
+      progressThumb.style.left = `${percent}%`;
+      timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+      progressContainer.setAttribute('aria-valuenow', Math.round(percent));
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        quotes.classList.remove('visible');
+        setTimeout(() => quotes.classList.add('visible'), 20);
+      } else {
+        audio.pause();
+      }
+      updatePlayButton();
+    });
+
+    restartBtn.addEventListener('click', () => {
+      audio.currentTime = 0;
+      audio.play();
+      quotes.classList.remove('visible');
+      void quotes.offsetWidth;
+      quotes.classList.add('visible');
+      updatePlayButton();
+    });
+
+    audio.addEventListener('ended', () => {
+      updatePlayButton();
+      quotes.classList.remove('visible');
+    });
+
+    // Клик по прогресс-бару
+    progressContainer.addEventListener('click', e => {
+      const rect = progressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percent = clickX / rect.width;
+      audio.currentTime = percent * audio.duration;
+    });
+
+    // Перетаскивание ползунка
+    let isDragging = false;
+
+    progressThumb.addEventListener('mousedown', e => {
+      isDragging = true;
+      e.preventDefault();
+    });
+
+    window.addEventListener('mouseup', () => isDragging = false);
+
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const rect = progressContainer.getBoundingClientRect();
+      let x = Math.min(Math.max(0, e.clientX - rect.left), rect.width);
+      const percent = x / rect.width;
+      progressBar.style.width = `${percent * 100}%`;
+      progressThumb.style.left = `${percent * 100}%`;
+      audio.currentTime = percent * audio.duration;
+    });
+    function createStars(containerSelector, count) {
+  const container = document.querySelector(containerSelector);
+  for(let i = 0; i < count; i++) {
+    const star = document.createElement('span');
+    star.classList.add('falling-star');
+    star.textContent = '✦';
+
+    // Размер звезды от 8 до 20px
+    const size = 8 + Math.random() * 12;
+    star.style.fontSize = size + 'px';
+
+    // Случайное горизонтальное положение внутри контейнера (0-60px)
+    star.style.left = Math.random() * 60 + 'px';
+
+    // Начальное вертикальное положение выше экрана (от -100 до 0 px)
+    star.style.top = (-100 * Math.random()) + 'px';
+
+    // Длительность анимации от 5 до 12 секунд
+    star.style.animationDuration = (5 + Math.random() * 7) + 's';
+
+    // Задержка анимации — рандомно, чтобы звезды не падали одновременно
+    star.style.animationDelay = (Math.random() * 12) + 's';
+
+    // Немного разной прозрачности
+    star.style.opacity = 0.5 + Math.random() * 0.5;
+
+    container.appendChild(star);
+  }
+}
+
+// Создаем по 30 звёздочек слева и справа
+createStars('.falling-stars-container.left', 30);
+createStars('.falling-stars-container.right', 30);
+
+  </script>
+
+</body>
+</html>
